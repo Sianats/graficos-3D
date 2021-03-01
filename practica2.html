@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title> canvas </title>
+ </head>
+
+<body onload ="iniciar()">
+    <canvas id="mycanvas" width="1000" legth="1000"></canvas>
+</body>
+
+<script>
+function iniciar() {
+    // document.getElementById sirve para coger el id que has declarado antes en html, el script lo tiene para acceder a documentos de html
+    var cuadrado= document.getElementById("mycanvas");
+    //estoy en 2d (mi contexto es 2d) estoy en 3d (mi contexto es webgl)
+    // en la variable que llamas gl guardas tu contyexto de tu canvas (zona de dibujo)
+    var gl = canvas.getContext ("Webgl");
+    //ahora voy a hacer un buble que NO seria necesario pero por si algo fallara, me saldria el aviso de que algo esta mal.
+    // la exclamacion significa que gl por ejemplo no tiene valor (osea que esta mal)
+    if (!gl) {
+            console.log ("algo esta fallando");
+            return;
+    }
+    //RETURN SIRVE PARA CERRAR EL BUCLE QUE ACABAS DE HACER; console.log sirve para que el programa te escriba cosas en la consola ( en pantalla)
+    //ahora creo el color, como es una cosa del contexto, pongo lo de gl. (para usar las diferentes funciones disponibles en el webgl) y para dibujar un color solido (no transparente) se usa la funcion clearcolor
+    //los colores se crean a base de cantidad de mezclar rojo-verde-azul teniendo como maxima cantidad 1.0 (un float) de cada y la opacidad del mismo (1.0 es totalmente opaco, solido)
+    
+    gl.clearcolor(0.5,0,25, 0,10, 1.0);
+
+    //clear sirve para que cuando recargues la pagina se limpie y puedas empezar de cero
+    //es necesario clear el canvas en todos los programas que haga porque si refrescaras la pagina te saldria error
+    // la funcion gl.COLOR_BUFFER_BIT es una mera formalidad, para ponerlo todo a negro y volver a inicializar lo que has hecho, es necesario para limpiar
+
+    gl.clear(gl.COLOR_BUFFER_BIT);
+}
+</script>
+</html>
