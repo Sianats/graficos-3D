@@ -12,7 +12,7 @@ function iniciar() {
     }
  
     
-    gl.clearColor(1.0, 0.5, 0.25, 1.0);
+    gl.clearColor(1.0, 0.3, 0.5, 1.0);
 
     gl.clear(gl.COLOR_BUFFER_BIT);
 }
