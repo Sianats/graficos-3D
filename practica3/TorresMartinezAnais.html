@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <title>Ejercicio 3</title>
+    </head>
+
+    <body onload="init()">
+        <canvas id="myCanvas" width="640" height="400"></canvas>
+    </body>
+
+    <script id="shaderVs" type="x-shader/x-vertex">
+        attribute vec4 a_Position;
+        attribute float a_Tam;
+        void main (){
+            gl_Position= a_Position;
+            gl_PointSize= a_Tam;
+        }
+    </script>
+
+    <script id="shaderFs" type="x-shader/x-fragment">
+        precision mediump float;
+        uniform vec4 u_FragColor;
+        void main (){
+            gl_FragColor= u_FragColor;
+        }
+    </script>
+
+    <script>
+
+        function initShaders(gl, vs_source, fs_source) {
+            var vertexShader = makeShader(gl, vs_source, gl.VERTEX_SHADER);
+            var fragmentShader = makeShader(gl, fs_source, gl.FRAGMENT_SHADER);
+            var glProgram = gl.createProgram();
+            gl.attachShader(glProgram, vertexShader);
+            gl.attachShader(glProgram, fragmentShader);
+            gl.linkProgram(glProgram);
+            if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
+                alert("Unable to initialize the shader program");
+                return false;
+            }
+            gl.useProgram(glProgram);
+            gl.program = glProgram;
+            return true;
+        }
+
+        function makeShader(gl, src, type) {
+            var shader = gl.createShader(type);
+            gl.shaderSource(shader, src);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                alert("Error compiling shader: " + gl.getShaderInfoLog(shader));
+                return;
+            }
+            return shader;
+        }
+
+        function init(){
+            var canvas= document.getElementById("myCanvas");
+            var gl= canvas.getContext("webgl");
+
+            if (!gl) {
+                console.log("Error inicializandon webgl");
+                return;
+            }
+            var vs= document.getElementById("shaderVs").innerHTML;
+            var fs= document.getElementById("shaderFs").innerHTML;
+
+            if(!initShaders(gl, vs, fs)){
+                console.log("No me funciona nada en la vida");
+                return;
+            }
+            var a_Position= gl.getAttribLocation(gl.program, "a_Position");
+            var a_Tam = gl.getAttribLocation(gl.program, "a_Tam");
+            var u_FragColor= gl.getUniformLocation(gl.program, "u_FragColor");
+            canvas.onmousedown = function(ev) {
+            dibujo(ev, gl, canvas, a_Position, a_Tam, u_FragColor);
+            };
+            gl.clearColor(0.0, 0.0, 0.0, 1.0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+        }
+
+        var points=[];
+        var colors=[];
+        var tam=[];
+
+        function dibujo(ev, gl, canvas, a_Position, a_Tam, u_FragColor) {
+            var rect = ev.target.getBoundingClientRect();
+            var clickX = ev.clientX - rect.left;
+            var clickY = ev.clientY - rect.top;
+            var halfCanvasWidth = canvas.width / 2;
+            var halfCanvasHeight = canvas.height / 2;
+            var x = (clickX - halfCanvasWidth) / halfCanvasWidth;
+            var y = (halfCanvasHeight - clickY) / halfCanvasHeight;
+            points.push([x,y,0]);
+            var distancia= Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+            var size = distancia * 20;
+            tam.push(size);
+
+            if (x >= 0.0 && y >= 0.0 && x <= 0.7 && y <= 0.7){
+                colors.push([0.0, 1.0, 0.0, 1.0]); //Verde
+            } else if (x >= 0.0 && y < 0.0 && x <= 0.7 && y >= -0.7){
+                colors.push([1.0, 1.0, 0.0, 1.0]); // Amarillo
+            } else if (x < 0.0 && y >= 0.0 && x >= -0.7 && y <= 0.7){
+                colors.push([1.0, 0.0, 0.0, 1.0]); // rojo
+            } else if (x < 0.0 && y < 0.0 && x >= -0.7 && y >= -0.7){
+                colors.push([0.0, 0.0, 1.0, 1.0]); //azul
+            } else {
+                colors.push([1.0, 1.0, 1.0, 1.0]); //Blanco
+            }
+
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            var len= points.length;
+
+            for (var i= 0; i < len; i++){
+                var punto= points[i];
+                var tamano= tam[i];
+                var color= colors[i];
+                gl.vertexAttrib3f(a_Position, punto[0], punto[1], 0.0);
+                gl.vertexAttrib1f(a_Tam, tamano);
+                gl.uniform4f(u_FragColor, color[0], color[1], color[2], color[3]);
+                gl.drawArrays(gl.POINTS, 0, 1);
+            }
+        }
+    </script>
+
+</html>
