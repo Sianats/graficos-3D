@@ -39,8 +39,8 @@
           // Init WebGL context
           gl = canvas.getContext("webgl");
           if (!gl) {
-              console.log("Failed to get the rendering context for WebGL");
-              return;
+            console.log("Failed to get the rendering context for WebGL");
+            return;
           }
 
           // Init shaders
@@ -53,6 +53,9 @@
 
           // Set clear canvas color
           gl.clearColor(0.0, 0.0, 0.0, 1.0);
+
+          // Init projection matrix
+          initProjection(gl, canvas);
 
           // Hidden surface removal
           gl.enable(gl.DEPTH_TEST);
@@ -104,46 +107,46 @@
       function initVertexShader(gl) {
         // Vertexes and colors  (X, Y, Z, R, G, B)
         var vertexesAndColors = [
-          // Back - red OK
+          // Back - red
           0.5, 0.2, -0.5,       1, 0, 0, // v0
           -0.5, 0.2, -0.5,      1, 0, 0, // v1 
           -0.5, 0.5, -0.5,      1, 0, 0, // v2  
           0.5, 0.5, -0.5,       1, 0, 0, // v3 
 
-				  // Front - Blue OK
+				  // Front - Blue
           -0.5, 0.2, 0.5,       0, 0, 1, // v4 
           0.5, 0.2, 0.5,        0, 0, 1, // v5 
           0.5, 0.5, 0.5,        0, 0, 1, // v6 
           -0.5, 0.5, 0.5,       0, 0, 1, // v7 
 
-				  // Left – green OK
+				  // Left – green
           -0.5, 0.2, -0.5,      0, 1, 0, // v8 
           -0.5, 0.2, 0.5,       0, 1, 0, // v9  
           -0.5, 0.5, 0.5,       0, 1, 0, // v10 
           -0.5, 0.5, -0.5,      0, 1, 0, // v11
 
-				  // Right - yellow OK
+				  // Right - yellow
           0.5, 0.2, 0.5,        1, 1, 0, // v12
           0.5, 0.2, -0.5,       1, 1, 0, // v13  
           0.5, 0.5, -0.5,       1, 1, 0, // v14 
           0.5, 0.5, 0.5,        1, 1, 0, // v15 
 
-				  // Bottom - yellow OK
+				  // Bottom - yellow
           0.5, 0.2, -0.5,       1, 1, 0, // v16
           0.5, 0.2, 0.5,        1, 1, 0, // v17 
           0, -0.5, 0,           1, 1, 0, // v18 
           
-				  // bottom - blue OK
+				  // bottom - blue
           0.5, 0.2, 0.5,        0, 0, 1,//v19
           -0.5, 0.2, 0.5,       0, 0, 1,//v20
           0, -0.5, 0,           0, 0, 1,//v21
 
-          //bottom- green OK
+          //bottom- green
           -0.5, 0.2, 0.5,       0, 1, 0, // v22
           -0.5, 0.2, -0.5,      0, 1, 0, // v23  
           0, -0.5, 0,           0, 1, 0, // v24 
 
-          // Bottom - red  
+          // Bottom - red 
           -0.5, 0.2, -0.5,      1, 0, 0, // v25
           0.5, 0.2, -0.5,       1, 0, 0, // v26 
           0, -0.5, 0,           1, 0, 0, // v27 
