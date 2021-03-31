@@ -84,9 +84,9 @@
 
         // Draw (Cubo enter o con lineas)
         if (primitiveValue == 'triangles'){
-          gl.drawElements(gl.TRIANGLES, 8 * 2 * 3, gl.UNSIGNED_SHORT, 0);
+          gl.drawElements(gl.TRIANGLES, 6 * 2 * 3, gl.UNSIGNED_SHORT, 0);
         } else {
-          gl.drawElements(gl.LINES, 8 * 2 * 3, gl.UNSIGNED_SHORT, 0);
+          gl.drawElements(gl.LINES, 6 * 2 * 3, gl.UNSIGNED_SHORT, 0);
         }
 
         // Init projection matrix
@@ -127,29 +127,21 @@
 
 				  // Right - yellow
           0.5, 0.2, 0.5,        1, 1, 0, // v12
-          0.5, 0.2, -0.5,       1, 1, 0, // v13  
+          0.5, 0.2, -0.5,       1, 1, 0, // v13
           0.5, 0.5, -0.5,       1, 1, 0, // v14 
           0.5, 0.5, 0.5,        1, 1, 0, // v15 
 
 				  // Bottom - yellow
-          0.5, 0.2, -0.5,       1, 1, 0, // v16
-          0.5, 0.2, 0.5,        1, 1, 0, // v17 
-          0, -0.5, 0,           1, 1, 0, // v18 
+          0, -0.5, 0,           1, 1, 0, // v16 
           
 				  // bottom - blue
-          0.5, 0.2, 0.5,        0, 0, 1,//v19
-          -0.5, 0.2, 0.5,       0, 0, 1,//v20
-          0, -0.5, 0,           0, 0, 1,//v21
+          0, -0.5, 0,           0, 0, 1,//v17
 
           //bottom- green
-          -0.5, 0.2, 0.5,       0, 1, 0, // v22
-          -0.5, 0.2, -0.5,      0, 1, 0, // v23  
-          0, -0.5, 0,           0, 1, 0, // v24 
+          0, -0.5, 0,           0, 1, 0, // v18 
 
           // Bottom - red 
-          -0.5, 0.2, -0.5,      1, 0, 0, // v25
-          0.5, 0.2, -0.5,       1, 0, 0, // v26 
-          0, -0.5, 0,           1, 0, 0, // v27 
+          0, -0.5, 0,           1, 0, 0, // v19 
         ];
 
         // Indexes (for drawing squares using triangles)
@@ -166,17 +158,11 @@
           12, 13, 14,
           12, 14, 15,
 
-          16, 17, 18,
-          16, 17, 18,
+          13, 12, 16,
+          5, 4, 17,
 
-          19, 20, 21,
-          19, 20, 21,
-
-          22, 23, 24,
-          22, 23, 24,
-
-          25, 26, 27,
-          25, 26, 27,
+          9, 8, 18,
+          1, 0, 19,
         ];
 
         // Write a_Position and a_Color using gl.ARRAY_BUFFER
